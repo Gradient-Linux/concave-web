@@ -22,3 +22,5 @@ go build ./...
   already returned by `concave serve`.
 - Keep WebSocket and SSE proxy behavior intact when changing proxy code.
 - Keep the sidebar/layout restrained and operational, not marketing-heavy.
+- Update [README.md](README.md) and the relevant files under [docs](docs) when
+  architecture, runtime, or user-visible behavior changes.
