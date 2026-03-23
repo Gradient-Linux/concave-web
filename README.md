@@ -45,6 +45,9 @@ browser -> concave-web -> concave serve
 - dashboard, suites, logs, workspace, doctor, and settings pages
 - admin-only users and system pages
 - terminal access to containers and the host through WebSocket-backed xterm surfaces
+- dark and light appearance modes
+- collapsible icon-first sidebar navigation
+- live dashboard telemetry for CPU, per-core CPU, RAM, GPU, VRAM, workspace, and suite state
 - single-binary delivery once the frontend is built and embedded
 
 ## Local config

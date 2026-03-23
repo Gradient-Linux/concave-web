@@ -107,6 +107,14 @@ export interface UsersActivityResponse {
 export interface MetricsPayload {
   workspace: WorkspacePayload | { error: string }
   suites: SuiteSummary[]
+  cpu: {
+    overall?: number
+    cores?: Array<{
+      name: string
+      utilization: number
+    }>
+    error?: string
+  }
   gpu: {
     devices?: Array<{
       name: string
@@ -114,6 +122,13 @@ export interface MetricsPayload {
       memory_used: number
       memory_total: number
     }>
+    error?: string
+  }
+  memory: {
+    used?: number
+    total?: number
+    swap_used?: number
+    swap_total?: number
     error?: string
   }
   timestamp: string

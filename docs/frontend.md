@@ -28,14 +28,16 @@ Auth bootstrap is handled by the Pinia auth store:
 
 ## Page responsibilities
 
-- Dashboard: high-level system and suite state
+- Dashboard: high-level system and suite state, CPU and GPU line graphs, memory bars,
+  per-core CPU activity, workspace capacity, and suite rollup
 - Suites: suite inspection and lifecycle actions
 - Logs: per-suite or per-container log exploration
 - Workspace: disk and workspace status
 - Doctor: host and suite health checks
 - Users: admin-only user activity summary
 - System: admin-only machine controls and host terminal
-- Settings: local browser shell configuration
+- Settings: local browser shell configuration plus appearance controls such as theme
+  and sidebar collapse state
 
 ## Terminal behavior
 
@@ -48,6 +50,16 @@ The terminal component is reusable and supports:
 
 Container terminals are available where role policy allows. Host terminal access is
 admin-only and intentionally lives in the System view.
+
+## Appearance model
+
+The shell supports:
+
+- dark and light themes
+- collapsible sidebar navigation
+- icon-led section and settings affordances
+
+These preferences are browser-local UI state, separate from the Go proxy config.
 
 ## UI rule of thumb
 

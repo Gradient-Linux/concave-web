@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 
+import AppIcon from '../components/AppIcon.vue'
 import { api } from '../lib/api'
+import { useUIStore } from '../stores/ui'
 import type { WebSettings } from '../types'
 
+const ui = useUIStore()
 const form = reactive<WebSettings>({
   api_base_url: '',
   bind_addr: '',
@@ -44,13 +47,22 @@ onMounted(load)
 
 <template>
   <section class="page-grid">
-    <article class="surface-panel hero-panel">
+    <article class="surface-panel hero-panel settings-hero">
       <p class="eyebrow">Settings</p>
-      <h2>Proxy configuration</h2>
-      <p class="muted-copy">concave-web persists its own bind address and upstream API target.</p>
+      <h2>Control plane preferences</h2>
+      <p class="muted-copy">Adjust the web shell look and the local proxy connection without leaving the browser.</p>
     </article>
 
     <article class="surface-panel">
+      <div class="settings-section-header">
+        <div class="settings-icon-shell">
+          <AppIcon name="server" />
+        </div>
+        <div>
+          <p class="eyebrow">Connection</p>
+          <h3>Proxy configuration</h3>
+        </div>
+      </div>
       <form class="form-stack" @submit.prevent="save">
         <label>
           <span>API base URL</span>
@@ -69,6 +81,52 @@ onMounted(load)
           <span class="success-copy" v-if="saved">{{ saved }}</span>
         </div>
       </form>
+    </article>
+
+    <article class="surface-panel">
+      <div class="settings-section-header">
+        <div class="settings-icon-shell">
+          <AppIcon name="palette" />
+        </div>
+        <div>
+          <p class="eyebrow">Appearance</p>
+          <h3>Shell preferences</h3>
+        </div>
+      </div>
+
+      <div class="settings-option">
+        <div>
+          <strong>Theme</strong>
+          <p class="muted-copy">Switch between the darker operations surface and a lighter fallback theme.</p>
+        </div>
+        <div class="segmented-toggle">
+          <button class="toggle-pill" :class="{ 'is-active': ui.theme === 'dark' }" type="button" @click="ui.setTheme('dark')">
+            <AppIcon name="moon" />
+            <span>Dark</span>
+          </button>
+          <button class="toggle-pill" :class="{ 'is-active': ui.theme === 'light' }" type="button" @click="ui.setTheme('light')">
+            <AppIcon name="sun" />
+            <span>Light</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-option">
+        <div>
+          <strong>Sidebar</strong>
+          <p class="muted-copy">Keep the left rail expanded for labels or collapse it down to icon-only navigation.</p>
+        </div>
+        <div class="segmented-toggle">
+          <button class="toggle-pill" :class="{ 'is-active': !ui.sidebarCollapsed }" type="button" @click="ui.setSidebarCollapsed(false)">
+            <AppIcon name="expand" />
+            <span>Expanded</span>
+          </button>
+          <button class="toggle-pill" :class="{ 'is-active': ui.sidebarCollapsed }" type="button" @click="ui.setSidebarCollapsed(true)">
+            <AppIcon name="collapse" />
+            <span>Collapsed</span>
+          </button>
+        </div>
+      </div>
     </article>
 
     <p v-if="error" class="error-copy">{{ error }}</p>
