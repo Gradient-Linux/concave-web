@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export type ThemeMode = 'dark' | 'light'
 
 const THEME_KEY = 'concave-web-theme'
-const SIDEBAR_KEY = 'concave-web-sidebar-collapsed'
+const SIDEBAR_KEY = 'concave-web-sidebar-collapsed-v2'
 
 function readTheme(): ThemeMode {
   const value = window.localStorage.getItem(THEME_KEY)
@@ -11,7 +11,11 @@ function readTheme(): ThemeMode {
 }
 
 function readSidebar(): boolean {
-  return window.localStorage.getItem(SIDEBAR_KEY) === 'true'
+  const value = window.localStorage.getItem(SIDEBAR_KEY)
+  if (value === null) {
+    return true
+  }
+  return value === 'true'
 }
 
 function applyTheme(theme: ThemeMode) {
@@ -21,7 +25,7 @@ function applyTheme(theme: ThemeMode) {
 export const useUIStore = defineStore('ui', {
   state: () => ({
     theme: 'dark' as ThemeMode,
-    sidebarCollapsed: false,
+    sidebarCollapsed: true,
     ready: false,
   }),
 

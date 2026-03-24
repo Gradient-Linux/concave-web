@@ -5,12 +5,12 @@
    ───────────────────────────────────────────────────────── */
 :root {
    /* Backgrounds */
-   --bg: #07090F;
-   --bg-2: #0B0E17;
-   --surface: #0F1520;
-   --surface-2: #141C2A;
-   --surface-3: #1A2235;
-   --surface-hover: #1F2840;
+   --bg: #0D0A1A;
+   --bg-2: #0A0814;
+   --surface: #151024;
+   --surface-2: #1C1530;
+   --surface-3: #251B3D;
+   --surface-hover: #2C214B;
 
    /* Borders */
    --border: rgba(255, 255, 255, 0.07);
@@ -18,34 +18,34 @@
    --border-strong: rgba(255, 255, 255, 0.18);
 
    /* Typography */
-   --text: #D8DCE8;
-   --text-muted: #546078;
-   --text-dim: #2E3648;
+   --text: #F2EFFF;
+   --text-muted: #9F93BF;
+   --text-dim: #64597F;
 
-   /* Accent — electric blue */
-   --blue: #3B8BFF;
-   --blue-hover: #5BA0FF;
-   --blue-dim: rgba(59, 139, 255, 0.12);
-   --blue-glow: 0 0 24px rgba(59, 139, 255, 0.2);
-   --blue-border: rgba(59, 139, 255, 0.35);
+   /* Accent */
+   --blue: #E040C8;
+   --blue-hover: #F05BD8;
+   --blue-dim: rgba(224, 64, 200, 0.14);
+   --blue-glow: 0 0 24px rgba(224, 64, 200, 0.22);
+   --blue-border: rgba(224, 64, 200, 0.35);
 
    /* Gradient Linux accents */
-   --color-deep: #401079;
-   --color-mid: #7C3AED;
-   --color-gold: #F9D44E;
-   --color-deep-dim: rgba(64, 16, 121, 0.18);
-   --color-mid-dim: rgba(124, 58, 237, 0.18);
-   --color-gold-dim: rgba(249, 212, 78, 0.18);
+   --color-deep: #5B00A0;
+   --color-mid: #D63CA0;
+   --color-gold: #F5C842;
+   --color-deep-dim: rgba(91, 0, 160, 0.18);
+   --color-mid-dim: rgba(214, 60, 160, 0.18);
+   --color-gold-dim: rgba(245, 200, 66, 0.18);
 
    /* Status colors */
-   --green: #00D68F;
+   --green: #59D98C;
    --green-dim: rgba(0, 214, 143, 0.1);
-   --amber: #FF9500;
-   --amber-dim: rgba(255, 149, 0, 0.1);
-   --red: #FF3B5C;
+   --amber: #E8A020;
+   --amber-dim: rgba(232, 160, 32, 0.12);
+   --red: #FF5878;
    --red-dim: rgba(255, 59, 92, 0.1);
-   --purple: #A97FFF;
-   --purple-dim: rgba(169, 127, 255, 0.1);
+   --purple: #D63CA0;
+   --purple-dim: rgba(214, 60, 160, 0.12);
 
    /* Layout */
    --sidebar-width: 232px;
@@ -86,11 +86,11 @@
    --text: #111827;
    --text-muted: #6B7280;
    --text-dim: #9CA3AF;
-   --blue-dim: rgba(59, 139, 255, 0.08);
+   --blue-dim: rgba(224, 64, 200, 0.1);
    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
-   --color-deep-dim: rgba(64, 16, 121, 0.08);
-   --color-mid-dim: rgba(124, 58, 237, 0.1);
-   --color-gold-dim: rgba(249, 212, 78, 0.14);
+   --color-deep-dim: rgba(91, 0, 160, 0.08);
+   --color-mid-dim: rgba(214, 60, 160, 0.1);
+   --color-gold-dim: rgba(245, 200, 66, 0.14);
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -113,8 +113,9 @@ body {
    background: var(--bg);
    color: var(--text);
    background-image:
-      radial-gradient(ellipse 60% 40% at 70% -10%, rgba(59, 139, 255, 0.05) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 50% at 0% 80%, rgba(0, 214, 143, 0.03) 0%, transparent 60%);
+      radial-gradient(ellipse 60% 40% at 72% -10%, rgba(214, 60, 160, 0.11) 0%, transparent 68%),
+      radial-gradient(ellipse 36% 48% at 0% 82%, rgba(245, 200, 66, 0.06) 0%, transparent 58%),
+      radial-gradient(ellipse 34% 44% at 24% 0%, rgba(91, 0, 160, 0.14) 0%, transparent 64%);
 }
 
 button,
