@@ -43,34 +43,46 @@ let animationFrameId = 0
 let lineSegments: THREE.LineSegments<THREE.BufferGeometry, THREE.LineBasicMaterial> | null = null
 let resizeHandler: (() => void) | null = null
 let pointerHandler: (() => void) | null = null
+let enabled = true
 
 function initScene() {
   if (!canvasContainer.value) {
     return
   }
 
-  scene = new THREE.Scene()
-  scene.fog = new THREE.FogExp2(COLORS.bg, 0.023)
+  try {
+    scene = new THREE.Scene()
+    scene.fog = new THREE.FogExp2(COLORS.bg, 0.023)
 
-  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
-  camera.position.set(0, 0, 39)
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
+    camera.position.set(0, 0, 39)
 
-  renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  renderer.setClearAlpha(0)
-  canvasContainer.value.appendChild(renderer.domElement)
+    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setClearAlpha(0)
+    canvasContainer.value.appendChild(renderer.domElement)
 
-  controls = new OrbitControls(camera, renderer.domElement)
-  controls.enableDamping = true
-  controls.enablePan = false
-  controls.enableZoom = false
-  controls.autoRotate = true
-  controls.autoRotateSpeed = 0.4
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+    controls.enablePan = false
+    controls.enableZoom = false
+    controls.autoRotate = true
+    controls.autoRotateSpeed = 0.4
+  } catch (error) {
+    enabled = false
+    scene = null
+    camera = null
+    renderer = null
+    controls = null
+    if (import.meta.env.DEV) {
+      console.warn('NeuralBackground disabled:', error)
+    }
+  }
 }
 
 function buildNetwork() {
-  if (!scene) {
+  if (!enabled || !scene) {
     return
   }
 
@@ -137,7 +149,7 @@ function buildNetwork() {
 }
 
 function spawnSignal(startNode: NeuralNode) {
-  if (!scene || startNode.connections.length === 0) {
+  if (!enabled || !scene || startNode.connections.length === 0) {
     return
   }
 
@@ -171,6 +183,9 @@ function triggerThought() {
 }
 
 function animate() {
+  if (!enabled) {
+    return
+  }
   animationFrameId = window.requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
@@ -228,6 +243,9 @@ function handleResize() {
 
 onMounted(() => {
   initScene()
+  if (!enabled) {
+    return
+  }
   buildNetwork()
   animate()
 
