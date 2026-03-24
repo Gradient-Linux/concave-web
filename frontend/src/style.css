@@ -178,9 +178,9 @@ h4 {
    z-index: 0;
    pointer-events: none;
    overflow: hidden;
-   opacity: 0.72;
-   filter: blur(14px) saturate(1.08);
-   transform: scale(1.04);
+   opacity: 0.9;
+   filter: blur(10px) saturate(1.12);
+   transform: scale(1.06);
 }
 
 .gradient-bg canvas {
@@ -193,8 +193,9 @@ h4 {
    SIDEBAR
    ───────────────────────────────────────────────────────── */
 .app-sidebar {
-   background: var(--bg-2);
+   background: rgba(10, 8, 20, 0.74);
    border-right: 1px solid var(--border);
+   backdrop-filter: blur(18px);
    padding: 0;
    display: flex;
    flex-direction: column;
@@ -250,6 +251,10 @@ h4 {
 
 .app-shell.is-collapsed .brand-lockup {
    padding: 12px 8px;
+}
+
+.app-shell.is-collapsed .sidebar-toggle {
+   width: 100%;
 }
 
 /* Nav */
@@ -464,9 +469,10 @@ h4 {
    SURFACE PANELS
    ───────────────────────────────────────────────────────── */
 .surface-panel {
-   background: var(--surface);
+   background: rgba(21, 16, 36, 0.72);
    border: 1px solid var(--border);
    border-radius: var(--radius-xl);
+   backdrop-filter: blur(18px);
    padding: 20px;
    box-shadow: var(--shadow-sm);
    transition: border-color 200ms ease;
@@ -475,11 +481,28 @@ h4 {
 .surface-panel--hero,
 .hero-panel {
    background: linear-gradient(135deg,
-         rgba(59, 139, 255, 0.06) 0%,
-         rgba(0, 214, 143, 0.04) 60%,
+         rgba(214, 60, 160, 0.12) 0%,
+         rgba(245, 200, 66, 0.08) 60%,
          transparent 100%),
-      var(--surface);
+      rgba(21, 16, 36, 0.72);
    border-color: var(--border-mid);
+}
+
+:root[data-theme='light'] .app-sidebar {
+   background: rgba(244, 240, 251, 0.78);
+}
+
+:root[data-theme='light'] .surface-panel {
+   background: rgba(255, 255, 255, 0.78);
+}
+
+:root[data-theme='light'] .surface-panel--hero,
+:root[data-theme='light'] .hero-panel {
+   background: linear-gradient(135deg,
+         rgba(200, 49, 138, 0.12) 0%,
+         rgba(212, 136, 10, 0.08) 60%,
+         transparent 100%),
+      rgba(255, 255, 255, 0.78);
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -691,6 +714,27 @@ h4 {
    display: flex;
    flex-direction: column;
    gap: 6px;
+}
+
+.workspace-progress {
+   margin-bottom: 6px;
+}
+
+.workspace-usage-list {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.workspace-usage-item {
+   display: flex;
+   flex-direction: column;
+   gap: 5px;
+}
+
+.workspace-usage-row span,
+.workspace-usage-row strong {
+   font-size: 12px;
 }
 
 .progress-track {

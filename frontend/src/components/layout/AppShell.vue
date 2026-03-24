@@ -48,8 +48,8 @@ async function logout() {
       <div class="brand-lockup">
         <div class="brand-heading" :class="{ 'is-collapsed': sidebarCollapsed }">
           <div v-if="!sidebarCollapsed" class="brand-copy">
-            <p class="brand-mark">Gradient</p>
-            <p class="brand-subtitle">Linux</p>
+            <p class="brand-mark">Concave</p>
+            <p class="brand-subtitle">Dashboard</p>
           </div>
           <button
             class="icon-button sidebar-toggle"

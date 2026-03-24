@@ -53,6 +53,31 @@ const workspaceUsagePercent = computed(() => {
   return clampPercent((workspace.value.used / workspace.value.total) * 100)
 })
 
+const workspaceUsageEntries = computed(() => {
+  if (!workspace.value?.usages) {
+    return []
+  }
+
+  const preferredOrder = ['backups', 'compose', 'config', 'dags', 'data', 'mlruns', 'models', 'notebooks', 'outputs']
+  const entries = Object.entries(workspace.value.usages)
+  const ranking = new Map(preferredOrder.map((name, index) => [name, index]))
+
+  return entries
+    .sort(([left], [right]) => {
+      const leftRank = ranking.get(left) ?? preferredOrder.length + 1
+      const rightRank = ranking.get(right) ?? preferredOrder.length + 1
+      if (leftRank !== rightRank) {
+        return leftRank - rightRank
+      }
+      return left.localeCompare(right)
+    })
+    .map(([name, value]) => ({
+      name,
+      value,
+      percent: workspace.value?.total ? clampPercent((value / workspace.value.total) * 100) : 0,
+    }))
+})
+
 const ramUsagePercent = computed(() => {
   if (!memory.value?.total || !memory.value?.used) {
     return 0
@@ -140,13 +165,32 @@ onBeforeUnmount(() => {
         <span>{{ formatBytes(workspace.total) }} total</span>
       </div>
       <p class="muted-copy">{{ workspace.root }}</p>
-      <div class="usage-block">
-        <div class="row-line">
-          <span>Used</span>
-          <strong>{{ formatBytes(workspace.used) }}</strong>
+      <div class="usage-stack">
+        <div class="usage-block">
+          <div class="row-line">
+            <span>Usage</span>
+            <strong>{{ percentageText(workspaceUsagePercent) }}</strong>
+          </div>
+          <div class="progress-track workspace-progress">
+            <div
+              class="progress-fill progress-fill--accent"
+              :style="{ width: progressWidth(workspaceUsagePercent), background: usageTone(workspaceUsagePercent) }"
+            ></div>
+          </div>
         </div>
-        <div class="progress-track">
-          <div class="progress-fill progress-fill--accent" :style="{ width: progressWidth(workspaceUsagePercent), background: usageTone(workspaceUsagePercent) }"></div>
+        <div class="workspace-usage-list">
+          <div v-for="entry in workspaceUsageEntries" :key="entry.name" class="workspace-usage-item">
+            <div class="row-line workspace-usage-row">
+              <span>{{ entry.name }}</span>
+              <strong>{{ formatBytes(entry.value) }}</strong>
+            </div>
+            <div class="progress-track">
+              <div
+                class="progress-fill progress-fill--accent"
+                :style="{ width: progressWidth(entry.percent), background: usageTone(entry.percent) }"
+              ></div>
+            </div>
+          </div>
         </div>
       </div>
     </article>
@@ -179,16 +223,16 @@ onBeforeUnmount(() => {
       <MetricLineChart :values="cpuHistory" stroke="var(--color-mid)" fill="rgba(124, 58, 237, 0.16)" />
     </article>
 
-    <article class="surface-panel dashboard-card card-span-6">
+    <article class="surface-panel dashboard-card card-span-6" v-if="gpuDevices.length">
       <div class="metric-panel-header">
         <div>
           <p class="eyebrow">GPU usage</p>
           <div class="metric-kicker">
             <AppIcon name="gpu" />
-            <strong>{{ gpuDevices.length ? percentageText(gpuOverall) : 'N/A' }}</strong>
+            <strong>{{ percentageText(gpuOverall) }}</strong>
           </div>
         </div>
-        <span class="muted-copy">{{ gpuPrimary?.name || 'No GPU detected' }}</span>
+        <span class="muted-copy">{{ gpuPrimary?.name }}</span>
       </div>
       <MetricLineChart :values="gpuHistory" stroke="var(--color-gold)" fill="rgba(249, 212, 78, 0.14)" />
     </article>
