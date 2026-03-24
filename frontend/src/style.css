@@ -853,7 +853,7 @@ h4 {
    ───────────────────────────────────────────────────────── */
 .core-grid {
    display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+   grid-template-columns: repeat(4, minmax(0, 1fr));
    gap: 8px;
    margin-top: 12px;
 }
@@ -878,6 +878,11 @@ h4 {
    font-family: 'JetBrains Mono', monospace;
    font-size: 10px;
    color: var(--text-muted);
+}
+
+.dashboard-inline-error {
+   grid-column: 1 / -1;
+   margin: 0;
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -1417,6 +1422,16 @@ h4 {
    .metric-panel-header {
       flex-direction: column;
       align-items: flex-start;
+   }
+
+   .core-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+   }
+}
+
+@media (max-width: 520px) {
+   .core-grid {
+      grid-template-columns: 1fr !important;
    }
 }
 

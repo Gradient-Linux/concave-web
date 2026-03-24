@@ -28,7 +28,7 @@ onMounted(() => {
   scene = new THREE.Scene()
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
   camera.position.set(7.2, 8.2, 12.4)
-  camera.lookAt(0, 2, 0)
+  camera.lookAt(0, 1.2, 0)
 
   renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
   renderer.setSize(window.innerWidth, window.innerHeight)
@@ -94,7 +94,7 @@ onMounted(() => {
   })
 
   mesh = new THREE.Mesh(geometry, material)
-  mesh.position.y = -1
+  mesh.position.y = -1.8
   scene.add(mesh)
 
   const animate = () => {

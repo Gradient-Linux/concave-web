@@ -45,6 +45,22 @@ const gpuOverall = computed(() => {
 })
 const memory = computed(() => metrics.value?.memory ?? null)
 const cpuCores = computed(() => metrics.value?.cpu?.cores ?? [])
+const cpuCoreGridStyle = computed(() => {
+  const count = cpuCores.value.length
+  if (!count) {
+    return { gridTemplateColumns: 'repeat(1, minmax(0, 1fr))' }
+  }
+  if (count <= 4) {
+    return { gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }
+  }
+  if (count <= 8) {
+    return { gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }
+  }
+  if (count <= 12) {
+    return { gridTemplateColumns: 'repeat(6, minmax(0, 1fr))' }
+  }
+  return { gridTemplateColumns: 'repeat(8, minmax(0, 1fr))' }
+})
 
 const workspaceUsagePercent = computed(() => {
   if (!workspace.value?.total) {
@@ -125,15 +141,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="dashboard-grid">
-    <article class="surface-panel surface-panel--hero dashboard-card card-span-4">
-      <p class="eyebrow">Live</p>
-      <h2>Machine state</h2>
-      <p class="muted-copy">
-        {{ error || 'Shared concave serve snapshot with workspace, suite, CPU, memory, and GPU telemetry.' }}
-      </p>
-    </article>
-
-    <article class="surface-panel dashboard-card card-span-4" v-if="workspace">
+    <article class="surface-panel dashboard-card card-span-6" v-if="workspace">
       <p class="eyebrow">Workspace</p>
       <div class="metric-headline">
         <strong>{{ formatBytes(workspace.free) }} free</strong>
@@ -158,7 +166,7 @@ onBeforeUnmount(() => {
       </div>
     </article>
 
-    <article class="surface-panel dashboard-card card-span-4" v-if="metrics">
+    <article class="surface-panel dashboard-card card-span-6" v-if="metrics">
       <p class="eyebrow">Suites</p>
       <div class="metric-headline">
         <strong>{{ installedSuites.length }} installed</strong>
@@ -239,7 +247,7 @@ onBeforeUnmount(() => {
 
     <article class="surface-panel dashboard-card card-span-8">
       <p class="eyebrow">CPU cores</p>
-      <div class="core-grid">
+      <div class="core-grid" :style="cpuCoreGridStyle">
         <div v-for="core in cpuCores" :key="core.name" class="core-card">
           <div class="row-line">
             <span>{{ core.name }}</span>
@@ -254,5 +262,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </article>
+
+    <p v-if="error" class="error-copy dashboard-inline-error">{{ error }}</p>
   </section>
 </template>
