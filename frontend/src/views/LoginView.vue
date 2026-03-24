@@ -24,10 +24,8 @@ async function submit() {
 <template>
   <main class="login-shell">
     <section class="login-panel">
-      <p class="brand-mark">gradient</p>
       <h1>concave web</h1>
       <p class="muted-copy">Authenticate against concave serve and enter the machine control plane.</p>
-      <p class="login-note">Click the neural field behind this panel to trigger a thought burst.</p>
 
       <form class="form-stack" @submit.prevent="submit">
         <label>
