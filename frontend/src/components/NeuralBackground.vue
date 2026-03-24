@@ -50,6 +50,16 @@ function initScene() {
     return
   }
 
+  const probe = document.createElement('canvas')
+  const hasWebGL =
+    !!probe.getContext('webgl2') ||
+    !!probe.getContext('webgl') ||
+    !!probe.getContext('experimental-webgl')
+  if (!hasWebGL) {
+    enabled = false
+    return
+  }
+
   try {
     scene = new THREE.Scene()
     scene.fog = new THREE.FogExp2(COLORS.bg, 0.023)
