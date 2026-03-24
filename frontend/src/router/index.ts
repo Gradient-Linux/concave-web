@@ -5,12 +5,15 @@ import { useAuthStore } from '../stores/auth'
 import { pinia } from '../stores'
 import type { Role } from '../types'
 import DashboardView from '../views/DashboardView.vue'
+import EnvironmentView from '../views/EnvironmentView.vue'
+import FleetView from '../views/FleetView.vue'
 import DoctorView from '../views/DoctorView.vue'
 import LoginView from '../views/LoginView.vue'
 import LogsView from '../views/LogsView.vue'
 import SettingsView from '../views/SettingsView.vue'
 import SuitesView from '../views/SuitesView.vue'
 import SystemView from '../views/SystemView.vue'
+import TeamsView from '../views/TeamsView.vue'
 import UsersView from '../views/UsersView.vue'
 import WorkspaceView from '../views/WorkspaceView.vue'
 
@@ -28,10 +31,13 @@ export const router = createRouter({
     { path: '/', redirect: '/dashboard' },
     { path: '/login', component: LoginView, meta: { public: true, title: 'Login' } },
     { path: '/dashboard', component: DashboardView, meta: { minRole: 'viewer', title: 'Dashboard' } },
+    { path: '/environment', component: EnvironmentView, meta: { minRole: 'viewer', title: 'Environment' } },
+    { path: '/fleet', component: FleetView, meta: { minRole: 'viewer', title: 'Fleet' } },
     { path: '/suites', component: SuitesView, meta: { minRole: 'viewer', title: 'Suites' } },
     { path: '/logs', component: LogsView, meta: { minRole: 'viewer', title: 'Logs' } },
     { path: '/workspace', component: WorkspaceView, meta: { minRole: 'viewer', title: 'Workspace' } },
     { path: '/doctor', component: DoctorView, meta: { minRole: 'viewer', title: 'Doctor' } },
+    { path: '/teams', component: TeamsView, meta: { minRole: 'admin', title: 'Teams' } },
     { path: '/users', component: UsersView, meta: { minRole: 'admin', title: 'Users' } },
     { path: '/system', component: SystemView, meta: { minRole: 'admin', title: 'System' } },
     { path: '/settings', component: SettingsView, meta: { minRole: 'viewer', title: 'Settings' } },

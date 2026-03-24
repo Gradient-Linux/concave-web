@@ -34,6 +34,82 @@ export interface SuiteSummary {
   compose_exists: boolean
 }
 
+export interface EnvironmentPackageDiff {
+  name: string
+  baseline: string
+  current: string
+  tier: number | string
+  reason: string
+}
+
+export interface EnvironmentDriftReport {
+  group: string
+  user?: string
+  timestamp: string
+  diffs: EnvironmentPackageDiff[]
+  clean: boolean
+}
+
+export interface EnvironmentStatusResponse {
+  available?: boolean
+  message?: string
+  running?: boolean
+  last_scan?: string
+  group_reports?: EnvironmentDriftReport[]
+  snapshot_count?: number
+  socket_path?: string
+}
+
+export interface EnvironmentDiffResponse {
+  available?: boolean
+  message?: string
+  reports?: EnvironmentDriftReport[]
+}
+
+export interface FleetNodeInfo {
+  available?: boolean
+  message?: string
+  hostname?: string
+  machine_id?: string
+  gradient_version?: string
+  visibility?: string
+  installed_suites?: string[]
+  resolver_running?: boolean
+  last_seen?: string
+  address?: string
+}
+
+export interface FleetStatusResponse {
+  available?: boolean
+  message?: string
+  count?: number
+  peers?: FleetNodeInfo[]
+}
+
+export interface FleetPeersResponse {
+  available?: boolean
+  message?: string
+  peers?: FleetNodeInfo[]
+}
+
+export interface TeamSummary {
+  name?: string
+  preset?: string
+  users?: number | string | Array<unknown>
+  user_count?: number
+  cpu_quota?: string
+  ram_quota?: string
+  gpu?: string
+  description?: string
+  [key: string]: unknown
+}
+
+export interface TeamsResponse {
+  available?: boolean
+  message?: string
+  teams?: TeamSummary[]
+}
+
 export interface SuitesResponse {
   suites: SuiteSummary[]
 }

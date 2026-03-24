@@ -29,6 +29,27 @@ defineProps<{
       <path d="M3 8.5h7l2 2H21v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
       <path d="M3 8.5v-2A2.5 2.5 0 0 1 5.5 4H10l2 2h6.5A2.5 2.5 0 0 1 21 8.5" />
     </template>
+    <template v-else-if="name === 'environment'">
+      <circle cx="12" cy="12" r="7.5" />
+      <path d="M12 4.5v15" />
+      <path d="M4.5 12h15" />
+      <path d="M7.2 7.2l9.6 9.6" />
+      <path d="M16.8 7.2 7.2 16.8" />
+    </template>
+    <template v-else-if="name === 'fleet'">
+      <circle cx="6" cy="7" r="1.6" />
+      <circle cx="18" cy="7" r="1.6" />
+      <circle cx="12" cy="17" r="1.6" />
+      <path d="M7.5 7h9" />
+      <path d="M7.4 8.3l3.4 6.2" />
+      <path d="M16.6 8.3l-3.4 6.2" />
+    </template>
+    <template v-else-if="name === 'teams'">
+      <circle cx="9" cy="8.5" r="2.5" />
+      <circle cx="15.5" cy="9.5" r="2" />
+      <path d="M4.5 19v-1.2A4.3 4.3 0 0 1 8.8 13.5h.4A4.3 4.3 0 0 1 13.5 17.8V19" />
+      <path d="M13.8 19v-1A3 3 0 0 1 16.8 15h.2A3 3 0 0 1 20 18v1" />
+    </template>
     <template v-else-if="name === 'doctor'">
       <path d="M12 3v18" />
       <path d="M7 8h10" />

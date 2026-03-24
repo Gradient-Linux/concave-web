@@ -529,6 +529,10 @@ h4 {
    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
+.wide-panel {
+   grid-column: 1 / -1;
+}
+
 .dashboard-grid {
    display: grid;
    grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -550,6 +554,28 @@ h4 {
 .dashboard-card {
    min-height: 164px;
    padding: 16px;
+}
+
+.summary-strip {
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 12px;
+   margin-top: 16px;
+}
+
+.summary-strip div {
+   padding-top: 10px;
+   border-top: 1px solid var(--border);
+}
+
+.summary-label {
+   display: block;
+   margin-bottom: 4px;
+   font-size: 10px;
+   font-weight: 700;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   color: var(--text-dim);
 }
 
 .two-column-layout {
@@ -580,6 +606,87 @@ h4 {
 
 .table-row:last-child {
    border-bottom: none;
+}
+
+.report-list {
+   gap: 0;
+}
+
+.report-row {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 12px 0;
+   border-top: 1px solid var(--border);
+}
+
+.report-row:first-child {
+   border-top: none;
+   padding-top: 0;
+}
+
+.report-row__main {
+   min-width: 0;
+}
+
+.report-row__meta {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   gap: 6px;
+   text-align: right;
+}
+
+.empty-state {
+   padding-top: 8px;
+}
+
+.fleet-note {
+   margin-top: 12px;
+}
+
+.fleet-table {
+   display: grid;
+   gap: 0;
+}
+
+.fleet-table__head,
+.fleet-table__row {
+   display: grid;
+   grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 0.9fr);
+   gap: 12px;
+   align-items: center;
+}
+
+.fleet-table__head {
+   padding-bottom: 8px;
+   border-bottom: 1px solid var(--border);
+   color: var(--text-dim);
+   font-size: 10px;
+   font-weight: 700;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+}
+
+.fleet-table__row {
+   padding: 12px 0;
+   border-bottom: 1px solid var(--border);
+}
+
+.fleet-table__row:last-child {
+   border-bottom: none;
+}
+
+.fleet-table__cell {
+   color: var(--text-muted);
+   font-size: 13px;
+}
+
+.team-metrics {
+   display: grid;
+   gap: 8px;
+   margin-top: 12px;
 }
 
 .table-actions {
@@ -1424,6 +1531,10 @@ h4 {
       grid-template-columns: 1fr;
    }
 
+   .summary-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
    .card-span-4,
    .card-span-6,
    .card-span-8 {
@@ -1447,6 +1558,10 @@ h4 {
 @media (max-width: 520px) {
    .core-grid {
       grid-template-columns: 1fr !important;
+   }
+
+   .summary-strip {
+      grid-template-columns: 1fr;
    }
 }
 

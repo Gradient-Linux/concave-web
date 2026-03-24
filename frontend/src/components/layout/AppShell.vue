@@ -25,10 +25,13 @@ type NavItem = {
 
 const items: NavItem[] = [
   { label: 'Dashboard', to: '/dashboard', minRole: 'viewer', icon: 'dashboard' },
+  { label: 'Environment', to: '/environment', minRole: 'viewer', icon: 'environment' },
+  { label: 'Fleet', to: '/fleet', minRole: 'viewer', icon: 'fleet' },
   { label: 'Suites', to: '/suites', minRole: 'viewer', icon: 'suites' },
   { label: 'Logs', to: '/logs', minRole: 'viewer', icon: 'logs' },
   { label: 'Workspace', to: '/workspace', minRole: 'viewer', icon: 'workspace' },
   { label: 'Doctor', to: '/doctor', minRole: 'viewer', icon: 'doctor' },
+  { label: 'Teams', to: '/teams', minRole: 'admin', icon: 'teams' },
   { label: 'Users', to: '/users', minRole: 'admin', icon: 'users' },
   { label: 'System', to: '/system', minRole: 'admin', icon: 'system' },
   { label: 'Settings', to: '/settings', minRole: 'viewer', icon: 'settings' },
