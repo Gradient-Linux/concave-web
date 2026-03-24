@@ -49,11 +49,11 @@
 
    /* Layout */
    --sidebar-width: 232px;
-   --radius-sm: 6px;
-   --radius-md: 10px;
-   --radius-lg: 14px;
-   --radius-xl: 18px;
-   --radius-pill: 999px;
+   --radius-sm: 0px;
+   --radius-md: 0px;
+   --radius-lg: 0px;
+   --radius-xl: 0px;
+   --radius-pill: 0px;
 
    /* Shadows */
    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.5);
@@ -74,23 +74,33 @@
 
 /* ── LIGHT THEME ── */
 :root[data-theme='light'] {
-   --bg: #F0F2F7;
-   --bg-2: #EBEEf5;
+   --bg: #FFFFFF;
+   --bg-2: #F4F0FB;
    --surface: #FFFFFF;
-   --surface-2: #F6F8FC;
-   --surface-3: #EDF0F8;
-   --surface-hover: #E8EDF6;
-   --border: rgba(0, 0, 0, 0.07);
-   --border-mid: rgba(0, 0, 0, 0.11);
-   --border-strong: rgba(0, 0, 0, 0.18);
-   --text: #111827;
-   --text-muted: #6B7280;
-   --text-dim: #9CA3AF;
-   --blue-dim: rgba(224, 64, 200, 0.1);
+   --surface-2: #F4F0FB;
+   --surface-3: #EDE7F9;
+   --surface-hover: #E6DEF6;
+   --border: rgba(91, 74, 128, 0.12);
+   --border-mid: rgba(91, 74, 128, 0.18);
+   --border-strong: rgba(91, 74, 128, 0.26);
+   --text: #1A1030;
+   --text-muted: #5C4A80;
+   --text-dim: #9880B8;
+   --blue: #7B30C8;
+   --blue-hover: #9346D8;
+   --blue-dim: rgba(123, 48, 200, 0.12);
+   --blue-border: rgba(123, 48, 200, 0.28);
    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
-   --color-deep-dim: rgba(91, 0, 160, 0.08);
-   --color-mid-dim: rgba(214, 60, 160, 0.1);
-   --color-gold-dim: rgba(245, 200, 66, 0.14);
+   --color-deep: #7B30C8;
+   --color-mid: #C8318A;
+   --color-gold: #D4880A;
+   --color-deep-dim: rgba(123, 48, 200, 0.08);
+   --color-mid-dim: rgba(200, 49, 138, 0.1);
+   --color-gold-dim: rgba(212, 136, 10, 0.14);
+   --amber: #D4880A;
+   --amber-dim: rgba(212, 136, 10, 0.12);
+   --purple: #C8318A;
+   --purple-dim: rgba(200, 49, 138, 0.12);
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -253,7 +263,7 @@ h4 {
    bottom: 25%;
    width: 2px;
    background: var(--blue);
-   border-radius: 0 2px 2px 0;
+   border-radius: 0;
 }
 
 .app-shell.is-collapsed .nav-link {
@@ -377,7 +387,7 @@ h4 {
 .topbar-dot {
    width: 5px;
    height: 5px;
-   border-radius: 50%;
+   border-radius: 0;
    background: var(--blue);
    box-shadow: 0 0 6px var(--blue);
 }
@@ -646,7 +656,7 @@ h4 {
 .progress-track {
    width: 100%;
    height: 4px;
-   border-radius: 2px;
+   border-radius: 0;
    background: var(--surface-3);
    overflow: hidden;
 }
@@ -657,7 +667,7 @@ h4 {
 
 .progress-fill {
    height: 100%;
-   border-radius: 2px;
+   border-radius: 0;
    transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -847,7 +857,7 @@ h4 {
    align-items: center;
    gap: 6px;
    padding: 6px 12px;
-   border-radius: calc(var(--radius-md) - 2px);
+   border-radius: 0;
    border: none;
    background: transparent;
    color: var(--text-muted);
@@ -884,7 +894,7 @@ h4 {
    content: '';
    width: 5px;
    height: 5px;
-   border-radius: 50%;
+   border-radius: 0;
    flex-shrink: 0;
 }
 
@@ -1000,7 +1010,7 @@ h4 {
 
 .console-block::-webkit-scrollbar-thumb {
    background: var(--border-mid);
-   border-radius: 2px;
+   border-radius: 0;
 }
 
 .console-block.large {
@@ -1205,7 +1215,7 @@ h4 {
 
 ::-webkit-scrollbar-thumb {
    background: var(--border-mid);
-   border-radius: 3px;
+   border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
