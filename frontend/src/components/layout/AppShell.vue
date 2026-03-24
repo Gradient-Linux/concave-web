@@ -46,12 +46,17 @@ async function logout() {
   <div class="app-shell" :class="{ 'is-collapsed': sidebarCollapsed }">
     <aside class="app-sidebar">
       <div class="brand-lockup">
-        <div class="brand-heading">
-          <div>
+        <div class="brand-heading" :class="{ 'is-collapsed': sidebarCollapsed }">
+          <div v-if="!sidebarCollapsed" class="brand-copy">
             <p class="brand-mark">Gradient</p>
             <p class="brand-subtitle">Linux</p>
           </div>
-          <button class="icon-button" type="button" @click="ui.toggleSidebar()" :title="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+          <button
+            class="icon-button sidebar-toggle"
+            type="button"
+            @click="ui.toggleSidebar()"
+            :title="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+          >
             <AppIcon :name="sidebarCollapsed ? 'expand' : 'collapse'" />
           </button>
         </div>

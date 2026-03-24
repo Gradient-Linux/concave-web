@@ -119,13 +119,20 @@ body,
    margin: 0;
 }
 
+#app {
+   position: relative;
+   isolation: isolate;
+}
+
+.app-root {
+   position: relative;
+   z-index: 1;
+}
+
 body {
    background: var(--bg);
    color: var(--text);
-   background-image:
-      radial-gradient(ellipse 60% 40% at 72% -10%, rgba(214, 60, 160, 0.11) 0%, transparent 68%),
-      radial-gradient(ellipse 36% 48% at 0% 82%, rgba(245, 200, 66, 0.06) 0%, transparent 58%),
-      radial-gradient(ellipse 34% 44% at 24% 0%, rgba(91, 0, 160, 0.14) 0%, transparent 64%);
+   background-image: none;
 }
 
 button,
@@ -165,6 +172,23 @@ h4 {
    --sidebar-width: 64px;
 }
 
+.gradient-bg {
+   position: fixed;
+   inset: 0;
+   z-index: 0;
+   pointer-events: none;
+   overflow: hidden;
+   opacity: 0.72;
+   filter: blur(14px) saturate(1.08);
+   transform: scale(1.04);
+}
+
+.gradient-bg canvas {
+   width: 100% !important;
+   height: 100% !important;
+   display: block;
+}
+
 /* ─────────────────────────────────────────────────────────
    SIDEBAR
    ───────────────────────────────────────────────────────── */
@@ -193,6 +217,14 @@ h4 {
    gap: 8px;
 }
 
+.brand-heading.is-collapsed {
+   justify-content: center;
+}
+
+.brand-copy {
+   min-width: 0;
+}
+
 .brand-mark {
    font-family: 'Outfit', sans-serif;
    font-size: 15px;
@@ -214,6 +246,10 @@ h4 {
 
 .app-shell.is-collapsed .brand-subtitle {
    display: none;
+}
+
+.app-shell.is-collapsed .brand-lockup {
+   padding: 12px 8px;
 }
 
 /* Nav */
@@ -344,6 +380,10 @@ h4 {
    justify-content: center;
    cursor: pointer;
    transition: background 150ms, border-color 150ms, color 150ms;
+}
+
+.sidebar-toggle {
+   flex-shrink: 0;
 }
 
 .icon-button:hover {

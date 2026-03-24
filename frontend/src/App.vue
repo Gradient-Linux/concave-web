@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 
+import GradientBackground from './components/GradientBackground.vue'
 import AppShell from './components/layout/AppShell.vue'
 import { useUIStore } from './stores/ui'
 
@@ -14,10 +15,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <RouterView v-slot="{ Component }">
-    <component :is="Component" v-if="route.meta.public" />
-    <AppShell v-else>
-      <component :is="Component" />
-    </AppShell>
-  </RouterView>
+  <GradientBackground />
+  <div class="app-root">
+    <RouterView v-slot="{ Component }">
+      <component :is="Component" v-if="route.meta.public" />
+      <AppShell v-else>
+        <component :is="Component" />
+      </AppShell>
+    </RouterView>
+  </div>
 </template>
