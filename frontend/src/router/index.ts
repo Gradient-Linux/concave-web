@@ -8,6 +8,7 @@ import DashboardView from '../views/DashboardView.vue'
 import EnvironmentView from '../views/EnvironmentView.vue'
 import FleetView from '../views/FleetView.vue'
 import DoctorView from '../views/DoctorView.vue'
+import LabView from '../views/LabView.vue'
 import LoginView from '../views/LoginView.vue'
 import LogsView from '../views/LogsView.vue'
 import SettingsView from '../views/SettingsView.vue'
@@ -37,6 +38,7 @@ export const router = createRouter({
     { path: '/logs', component: LogsView, meta: { minRole: 'viewer', title: 'Logs' } },
     { path: '/workspace', component: WorkspaceView, meta: { minRole: 'viewer', title: 'Workspace' } },
     { path: '/doctor', component: DoctorView, meta: { minRole: 'viewer', title: 'Doctor' } },
+    { path: '/lab', component: LabView, meta: { minRole: 'viewer', title: 'Gradient Lab' } },
     { path: '/teams', component: TeamsView, meta: { minRole: 'admin', title: 'Teams' } },
     { path: '/users', component: UsersView, meta: { minRole: 'admin', title: 'Users' } },
     { path: '/system', component: SystemView, meta: { minRole: 'admin', title: 'System' } },

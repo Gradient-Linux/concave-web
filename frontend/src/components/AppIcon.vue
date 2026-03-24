@@ -55,6 +55,14 @@ defineProps<{
       <path d="M7 8h10" />
       <path d="m8 16 1.8-5 2.2 3 1.8-4 2.2 6" />
     </template>
+    <template v-else-if="name === 'lab'">
+      <path d="M9 3v5" />
+      <path d="M15 3v5" />
+      <path d="M8 8h8" />
+      <path d="m7 8-3 10a2 2 0 0 0 1.9 2.6h12.2A2 2 0 0 0 20 18L17 8" />
+      <path d="M10 13h4" />
+      <path d="M9 16h6" />
+    </template>
     <template v-else-if="name === 'users'">
       <path d="M16.5 21v-2a3.5 3.5 0 0 0-3.5-3.5h-2A3.5 3.5 0 0 0 7.5 19v2" />
       <circle cx="12" cy="8.5" r="3.5" />
