@@ -4,6 +4,7 @@ import { Terminal } from 'xterm'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { wsURL } from '../../lib/api'
+import { useUIStore } from '../../stores/ui'
 
 const props = defineProps<{
   endpoint: string
@@ -15,6 +16,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
+const ui = useUIStore()
 const host = ref<HTMLDivElement | null>(null)
 let terminal: Terminal | null = null
 let fitAddon: FitAddon | null = null
@@ -32,17 +34,59 @@ function teardown() {
   fitAddon = null
 }
 
+function terminalTheme(theme: 'dark' | 'light') {
+  if (theme === 'light') {
+    return {
+      background: '#FFFFFF',
+      foreground: '#1A1030',
+      cursor: '#7B30C8',
+      cursorAccent: '#FFFFFF',
+      selectionBackground: 'rgba(123, 48, 200, 0.18)',
+      black: '#1A1030',
+      red: '#C8318A',
+      green: '#2C8B57',
+      yellow: '#D4880A',
+      blue: '#7B30C8',
+      magenta: '#C8318A',
+      cyan: '#5C4A80',
+      white: '#5C4A80',
+      brightBlack: '#9880B8',
+      brightWhite: '#1A1030',
+    }
+  }
+
+  return {
+    background: '#0D0A1A',
+    foreground: '#F2EFFF',
+    cursor: '#F5C842',
+    cursorAccent: '#0D0A1A',
+    selectionBackground: 'rgba(91, 0, 160, 0.32)',
+    black: '#0A0814',
+    red: '#FF5878',
+    green: '#59D98C',
+    yellow: '#F5C842',
+    blue: '#5B00A0',
+    magenta: '#D63CA0',
+    cyan: '#9F93BF',
+    white: '#F2EFFF',
+    brightBlack: '#64597F',
+    brightWhite: '#FFFFFF',
+  }
+}
+
+function applyTerminalTheme() {
+  if (!terminal) {
+    return
+  }
+  terminal.options.theme = terminalTheme(ui.theme)
+}
+
 function connect() {
   if (!host.value || !props.modelValue) {
     return
   }
   terminal = new Terminal({
-    theme: {
-      background: '#0f0f1a',
-      foreground: '#f4f0ff',
-      cursor: '#F9D44E',
-      selectionBackground: '#401079',
-    },
+    theme: terminalTheme(ui.theme),
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 13,
   })
@@ -94,6 +138,13 @@ watch(
     if (value) {
       requestAnimationFrame(connect)
     }
+  },
+)
+
+watch(
+  () => ui.theme,
+  () => {
+    applyTerminalTheme()
   },
 )
 
