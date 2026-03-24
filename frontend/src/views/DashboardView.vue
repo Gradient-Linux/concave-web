@@ -53,31 +53,6 @@ const workspaceUsagePercent = computed(() => {
   return clampPercent((workspace.value.used / workspace.value.total) * 100)
 })
 
-const workspaceUsageEntries = computed(() => {
-  if (!workspace.value?.usages) {
-    return []
-  }
-
-  const preferredOrder = ['backups', 'compose', 'config', 'dags', 'data', 'mlruns', 'models', 'notebooks', 'outputs']
-  const entries = Object.entries(workspace.value.usages)
-  const ranking = new Map(preferredOrder.map((name, index) => [name, index]))
-
-  return entries
-    .sort(([left], [right]) => {
-      const leftRank = ranking.get(left) ?? preferredOrder.length + 1
-      const rightRank = ranking.get(right) ?? preferredOrder.length + 1
-      if (leftRank !== rightRank) {
-        return leftRank - rightRank
-      }
-      return left.localeCompare(right)
-    })
-    .map(([name, value]) => ({
-      name,
-      value,
-      percent: workspace.value?.total ? clampPercent((value / workspace.value.total) * 100) : 0,
-    }))
-})
-
 const ramUsagePercent = computed(() => {
   if (!memory.value?.total || !memory.value?.used) {
     return 0
@@ -165,32 +140,20 @@ onBeforeUnmount(() => {
         <span>{{ formatBytes(workspace.total) }} total</span>
       </div>
       <p class="muted-copy">{{ workspace.root }}</p>
-      <div class="usage-stack">
-        <div class="usage-block">
-          <div class="row-line">
-            <span>Usage</span>
-            <strong>{{ percentageText(workspaceUsagePercent) }}</strong>
-          </div>
-          <div class="progress-track workspace-progress">
-            <div
-              class="progress-fill progress-fill--accent"
-              :style="{ width: progressWidth(workspaceUsagePercent), background: usageTone(workspaceUsagePercent) }"
-            ></div>
-          </div>
+      <div class="usage-block dashboard-compact-block">
+        <div class="row-line">
+          <span>Used</span>
+          <strong>{{ formatBytes(workspace.used) }}</strong>
         </div>
-        <div class="workspace-usage-list">
-          <div v-for="entry in workspaceUsageEntries" :key="entry.name" class="workspace-usage-item">
-            <div class="row-line workspace-usage-row">
-              <span>{{ entry.name }}</span>
-              <strong>{{ formatBytes(entry.value) }}</strong>
-            </div>
-            <div class="progress-track">
-              <div
-                class="progress-fill progress-fill--accent"
-                :style="{ width: progressWidth(entry.percent), background: usageTone(entry.percent) }"
-              ></div>
-            </div>
-          </div>
+        <div class="progress-track workspace-progress">
+          <div
+            class="progress-fill progress-fill--accent"
+            :style="{ width: progressWidth(workspaceUsagePercent), background: usageTone(workspaceUsagePercent) }"
+          ></div>
+        </div>
+        <div class="row-line dashboard-compact-meta">
+          <span>Usage</span>
+          <strong>{{ percentageText(workspaceUsagePercent) }}</strong>
         </div>
       </div>
     </article>

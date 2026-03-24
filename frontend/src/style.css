@@ -533,7 +533,8 @@ h4 {
 }
 
 .dashboard-card {
-   min-height: 200px;
+   min-height: 164px;
+   padding: 16px;
 }
 
 .two-column-layout {
@@ -735,6 +736,34 @@ h4 {
 .workspace-usage-row span,
 .workspace-usage-row strong {
    font-size: 12px;
+}
+
+.dashboard-compact-block {
+   margin-top: 10px;
+}
+
+.dashboard-compact-meta {
+   margin-top: 2px;
+}
+
+.dashboard-card .metric-headline {
+   margin-top: 8px;
+}
+
+.dashboard-card .metric-panel-header {
+   margin-bottom: 0;
+}
+
+.dashboard-card .muted-copy {
+   font-size: 12px;
+}
+
+.dashboard-card .usage-stack {
+   gap: 10px;
+}
+
+.dashboard-card .row-line {
+   gap: 8px;
 }
 
 .progress-track {
