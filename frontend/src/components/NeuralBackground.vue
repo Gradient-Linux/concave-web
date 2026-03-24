@@ -18,7 +18,61 @@ type Signal = {
   speed: number
 }
 
+type FallbackNode = {
+  id: string
+  x: number
+  y: number
+  size: number
+  color: string
+}
+
+type FallbackEdge = {
+  id: string
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
+
+type Burst = {
+  id: number
+  x: number
+  y: number
+}
+
 const canvasContainer = ref<HTMLDivElement | null>(null)
+const bursts = ref<Burst[]>([])
+let burstID = 0
+
+const fallbackNodes: FallbackNode[] = [
+  { id: 'n1', x: 14, y: 28, size: 10, color: 'var(--color-gold)' },
+  { id: 'n2', x: 20, y: 54, size: 12, color: 'var(--color-mid)' },
+  { id: 'n3', x: 28, y: 36, size: 8, color: 'var(--color-deep)' },
+  { id: 'n4', x: 34, y: 62, size: 11, color: 'var(--color-mid)' },
+  { id: 'n5', x: 44, y: 22, size: 12, color: 'var(--color-gold)' },
+  { id: 'n6', x: 48, y: 48, size: 9, color: 'var(--color-mid)' },
+  { id: 'n7', x: 56, y: 34, size: 10, color: 'var(--color-deep)' },
+  { id: 'n8', x: 62, y: 58, size: 13, color: 'var(--color-mid)' },
+  { id: 'n9', x: 70, y: 24, size: 9, color: 'var(--color-gold)' },
+  { id: 'n10', x: 76, y: 46, size: 12, color: 'var(--color-mid)' },
+  { id: 'n11', x: 82, y: 68, size: 10, color: 'var(--color-deep)' },
+  { id: 'n12', x: 88, y: 36, size: 8, color: 'var(--color-gold)' },
+]
+
+const fallbackEdges: FallbackEdge[] = [
+  { id: 'e1', x1: 14, y1: 28, x2: 28, y2: 36 },
+  { id: 'e2', x1: 20, y1: 54, x2: 34, y2: 62 },
+  { id: 'e3', x1: 28, y1: 36, x2: 44, y2: 22 },
+  { id: 'e4', x1: 34, y1: 62, x2: 48, y2: 48 },
+  { id: 'e5', x1: 44, y1: 22, x2: 56, y2: 34 },
+  { id: 'e6', x1: 48, y1: 48, x2: 62, y2: 58 },
+  { id: 'e7', x1: 56, y1: 34, x2: 70, y2: 24 },
+  { id: 'e8', x1: 62, y1: 58, x2: 76, y2: 46 },
+  { id: 'e9', x1: 70, y1: 24, x2: 88, y2: 36 },
+  { id: 'e10', x1: 76, y1: 46, x2: 82, y2: 68 },
+  { id: 'e11', x1: 20, y1: 54, x2: 48, y2: 48 },
+  { id: 'e12', x1: 56, y1: 34, x2: 76, y2: 46 },
+]
 
 const COLORS = {
   yellow: new THREE.Color('#FFF176'),
@@ -42,7 +96,6 @@ let controls: OrbitControls | null = null
 let animationFrameId = 0
 let lineSegments: THREE.LineSegments<THREE.BufferGeometry, THREE.LineBasicMaterial> | null = null
 let resizeHandler: (() => void) | null = null
-let pointerHandler: (() => void) | null = null
 let enabled = true
 
 function initScene() {
@@ -192,6 +245,20 @@ function triggerThought() {
   }
 }
 
+function triggerBurst(x: number, y: number) {
+  const id = burstID
+  burstID += 1
+  bursts.value = [...bursts.value, { id, x, y }]
+  window.setTimeout(() => {
+    bursts.value = bursts.value.filter((burst) => burst.id !== id)
+  }, 1200)
+}
+
+function handlePointerDown(event: PointerEvent) {
+  triggerThought()
+  triggerBurst(event.clientX, event.clientY)
+}
+
 function animate() {
   if (!enabled) {
     return
@@ -260,9 +327,7 @@ onMounted(() => {
   animate()
 
   resizeHandler = () => handleResize()
-  pointerHandler = () => triggerThought()
   window.addEventListener('resize', resizeHandler)
-  canvasContainer.value?.addEventListener('pointerdown', pointerHandler)
 })
 
 onBeforeUnmount(() => {
@@ -270,9 +335,6 @@ onBeforeUnmount(() => {
 
   if (resizeHandler) {
     window.removeEventListener('resize', resizeHandler)
-  }
-  if (pointerHandler) {
-    canvasContainer.value?.removeEventListener('pointerdown', pointerHandler)
   }
 
   for (const signal of signals) {
@@ -311,5 +373,131 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="canvasContainer" class="neural-bg" aria-hidden="true"></div>
+  <div ref="canvasContainer" class="neural-bg" aria-hidden="true" @pointerdown="handlePointerDown">
+    <div class="neural-bg__fallback">
+      <svg class="neural-bg__wires" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <line
+          v-for="edge in fallbackEdges"
+          :key="edge.id"
+          :x1="edge.x1"
+          :y1="edge.y1"
+          :x2="edge.x2"
+          :y2="edge.y2"
+        />
+      </svg>
+      <span
+        v-for="node in fallbackNodes"
+        :key="node.id"
+        class="neural-bg__node"
+        :style="{
+          left: `${node.x}%`,
+          top: `${node.y}%`,
+          width: `${node.size}px`,
+          height: `${node.size}px`,
+          '--node-color': node.color,
+        }"
+      />
+      <span
+        v-for="burst in bursts"
+        :key="burst.id"
+        class="neural-bg__burst"
+        :style="{
+          left: `${burst.x}px`,
+          top: `${burst.y}px`,
+        }"
+      />
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.neural-bg__fallback {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.neural-bg__fallback::before,
+.neural-bg__fallback::after {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  pointer-events: none;
+}
+
+.neural-bg__fallback::before {
+  background:
+    radial-gradient(circle at 18% 30%, rgba(245, 200, 66, 0.18), transparent 18%),
+    radial-gradient(circle at 38% 70%, rgba(214, 60, 160, 0.18), transparent 20%),
+    radial-gradient(circle at 66% 32%, rgba(91, 0, 160, 0.22), transparent 24%),
+    radial-gradient(circle at 84% 62%, rgba(214, 60, 160, 0.16), transparent 18%);
+  filter: blur(24px);
+  opacity: 0.95;
+}
+
+.neural-bg__fallback::after {
+  background: radial-gradient(circle at 50% 50%, rgba(12, 8, 24, 0), rgba(12, 8, 24, 0.52) 78%);
+}
+
+.neural-bg__wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.52;
+}
+
+.neural-bg__wires line {
+  stroke: rgba(214, 60, 160, 0.22);
+  stroke-width: 0.18;
+}
+
+.neural-bg__node {
+  position: absolute;
+  display: block;
+  margin-left: calc(var(--node-size, 0px) / -2);
+  margin-top: calc(var(--node-size, 0px) / -2);
+  border-radius: 999px;
+  background: var(--node-color);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--node-color) 64%, transparent);
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+  animation: neuralPulse 4.6s ease-in-out infinite;
+}
+
+.neural-bg__burst {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(245, 200, 66, 0.6);
+  box-shadow:
+    0 0 0 1px rgba(245, 200, 66, 0.22),
+    0 0 28px rgba(245, 200, 66, 0.28);
+  animation: neuralBurst 1.2s ease-out forwards;
+}
+
+@keyframes neuralPulse {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  50% {
+    opacity: 0.92;
+    transform: translate(-50%, -50%) scale(1.16);
+  }
+}
+
+@keyframes neuralBurst {
+  0% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0.25);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(10);
+  }
+}
+</style>

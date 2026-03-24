@@ -1318,19 +1318,21 @@ h4 {
    display: grid;
    place-items: center;
    padding: 32px;
+   pointer-events: none;
    background:
-      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(214, 60, 160, 0.1) 0%, transparent 70%),
-      var(--bg);
+      radial-gradient(ellipse 58% 44% at 50% 0%, rgba(214, 60, 160, 0.12) 0%, rgba(214, 60, 160, 0.02) 46%, transparent 72%),
+      linear-gradient(180deg, rgba(13, 10, 26, 0.16) 0%, rgba(13, 10, 26, 0.38) 100%);
 }
 
 .login-panel {
    width: min(420px, 100%);
-   background: rgba(19, 13, 34, 0.7);
+   pointer-events: auto;
+   background: rgba(19, 13, 34, 0.54);
    border: 1px solid var(--border-mid);
    border-radius: var(--radius-xl);
    padding: 32px;
    box-shadow: var(--shadow-xl);
-   backdrop-filter: blur(18px);
+   backdrop-filter: blur(14px);
 }
 
 .login-panel .brand-mark {
@@ -1353,7 +1355,7 @@ h4 {
 }
 
 :root[data-theme='light'] .login-panel {
-   background: rgba(255, 255, 255, 0.78);
+   background: rgba(255, 255, 255, 0.68);
 }
 
 .neural-bg {
@@ -1361,9 +1363,9 @@ h4 {
    inset: 0;
    z-index: 0;
    pointer-events: auto;
-   filter: blur(5px) saturate(1.08);
-   transform: scale(1.03);
-   opacity: 0.84;
+   filter: blur(3px) saturate(1.1);
+   transform: scale(1.02);
+   opacity: 0.96;
 }
 
 .neural-bg canvas {
