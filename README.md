@@ -1,100 +1,99 @@
 # concave-web
 
-`concave-web` is the browser control plane for Gradient Linux. It serves an
-embedded Vue frontend, proxies authenticated API traffic to `concave serve`, and
-keeps its own local browser-shell configuration in `~/.config/concave-web/config.toml`.
+Browser control surface for Gradient Linux, served as a local Go binary with an embedded Vue frontend.
 
-## Responsibilities
+## What it does
 
-This repository owns:
+`concave-web` exposes the same local control plane that powers the terminal UI in a browser. It serves the compiled frontend, proxies `/api/v1/*` calls to `concave serve`, keeps browser sessions same-origin, and provides route-level views for suites, logs, workspace, environment drift, fleet state, users, and machine controls.
 
-- the `concave-web` Go wrapper process
-- the embedded Vue 3 frontend
-- same-origin proxying of `/api/v1/*` to `concave serve`
-- browser login/session bootstrap
-- role-aware navigation and action visibility
-- browser terminals for containers and the admin host shell
+## Requirements
 
-This repository does not own:
+- Ubuntu 24.04 LTS
+- `concave serve` running on `127.0.0.1:7777`
+- Modern browser with WebSocket support
 
-- PAM or Unix-group auth
-- Docker lifecycle logic
-- suite install semantics
-- machine control rules
+## Install
 
-Those remain in `concave`.
+`concave-web` ships with the Gradient Linux distribution and can also be built from source. The local web shell starts with:
+
+```bash
+concave-web serve
+```
+
+The default address is:
+
+```text
+http://127.0.0.1:8080
+```
+
+## Usage
+
+Start the browser shell and open it locally:
+
+```bash
+concave serve --addr 127.0.0.1:7777
+concave-web serve
+```
+
+Then open `http://127.0.0.1:8080` in your browser and sign in with a local Gradient Linux account.
+
+## Configuration
+
+`concave-web` reads its local proxy settings from:
+
+```text
+~/.config/concave-web/config.toml
+```
+
+Current fields:
+
+- `api_base_url`
+- `bind_addr`
+- `port`
+
+Theme mode and sidebar collapse state are browser-local preferences stored in `localStorage`.
 
 ## Architecture
 
-The runtime shape is:
-
-```text
-browser -> concave-web -> concave serve
-```
-
-`concave-web` keeps the browser same-origin against its own address and forwards:
-
-- cookies
-- normal API requests
-- streaming responses
-- WebSocket terminal upgrades
-
-## Features
-
-- login and session bootstrap against `concave serve`
-- dashboard, suites, logs, workspace, doctor, and settings pages
-- admin-only users and system pages
-- terminal access to containers and the host through WebSocket-backed xterm surfaces
-- dark and light appearance modes
-- collapsible icon-first sidebar navigation
-- live dashboard telemetry for CPU, per-core CPU, RAM, GPU, VRAM, workspace, and suite state
-- single-binary delivery once the frontend is built and embedded
-
-## Local config
-
-Path:
-
-- `~/.config/concave-web/config.toml`
-
-Default values:
-
-```toml
-api_base_url = "http://127.0.0.1:7777"
-bind_addr = "127.0.0.1"
-port = 8080
-```
+`concave-web` is a thin wrapper around the existing control plane. A Go binary embeds the built Vue 3 frontend, serves it at `/`, and reverse-proxies `/api/v1/*` to `concave serve`. The browser talks to `concave-web` only; `concave-web` talks to the local API.
 
 ## Development
 
-Frontend:
+### Prerequisites
+
+Install Go 1.25 or newer, Node.js 20 or newer, and npm.
+
+### Build
 
 ```bash
 cd frontend
 npm ci
 npm run build
+cd ..
+CGO_ENABLED=0 go build -o concave-web .
 ```
 
-Go wrapper:
+### Test
 
 ```bash
 go test ./...
-go build ./...
-go run . serve
 ```
 
-The default upstream API is `http://127.0.0.1:7777`.
+### Repo layout
 
-## Documentation
+```text
+concave-web/
+  frontend/src/      Vue routes, stores, components, styles
+  internal/proxy/    reverse proxy wiring
+  internal/config/   local config loading and saving
+  docs/              user and contributor docs
+  main.go            binary entrypoint and embedded asset server
+```
 
-Start with [docs/README.md](docs/README.md).
+## Roadmap
 
-Important docs:
+The current line covers dashboard, suites, logs, workspace, doctor, environment, fleet, Gradient Lab, settings, and admin-only system and user views. Upcoming work focuses on deeper parity with the full `concave` command surface and broader multi-node operations.
 
-- [docs/architecture.md](docs/architecture.md)
-- [docs/deployment.md](docs/deployment.md)
-- [docs/frontend.md](docs/frontend.md)
+## License
 
-## Contributing
-
-Contributor rules live in [CONTRIBUTING.md](CONTRIBUTING.md). If you change the
-proxy surface, route model, or UI behavior, update docs in the same change.
+License terms have not been published in this repository yet.
