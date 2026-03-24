@@ -47,6 +47,9 @@ func spaHandler(dist fs.FS) http.Handler {
 			name = "index.html"
 		}
 		if _, err := fs.Stat(dist, name); err == nil {
+			if strings.HasSuffix(name, ".html") {
+				w.Header().Set("Cache-Control", "no-store, max-age=0")
+			}
 			fileServer.ServeHTTP(w, r)
 			return
 		}
@@ -55,6 +58,7 @@ func spaHandler(dist fs.FS) http.Handler {
 			http.Error(w, "frontend not built", http.StatusInternalServerError)
 			return
 		}
+		w.Header().Set("Cache-Control", "no-store, max-age=0")
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write(index)
