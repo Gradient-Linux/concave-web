@@ -27,7 +27,7 @@ onMounted(() => {
 
   scene = new THREE.Scene()
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
-  camera.position.set(6, 7, 10)
+  camera.position.set(7.2, 8.2, 12.4)
   camera.lookAt(0, 2, 0)
 
   renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
@@ -59,18 +59,30 @@ onMounted(() => {
   const fragmentShader = `
     varying vec3 vPosition;
     void main() {
-      float t = smoothstep(0.0, 4.0, vPosition.y);
+      float t = clamp(vPosition.y / 8.64, 0.0, 1.0);
 
-      vec3 colorYellow = vec3(0.972, 0.784, 0.259);
-      vec3 colorPink   = vec3(0.878, 0.251, 0.627);
-      vec3 colorPurple = vec3(0.357, 0.0, 0.627);
-      vec3 colorDark   = vec3(0.051, 0.031, 0.078);
+      vec3 c1 = vec3(1.0, 0.945, 0.463);
+      vec3 c2 = vec3(1.0, 0.843, 0.251);
+      vec3 c3 = vec3(1.0, 0.431, 0.780);
+      vec3 c4 = vec3(0.671, 0.278, 0.737);
+      vec3 c5 = vec3(0.290, 0.078, 0.549);
+      vec3 c6 = vec3(0.102, 0.0, 0.188);
 
-      vec3 color = mix(colorYellow, colorPink, smoothstep(0.0, 0.33, t));
-      color = mix(color, colorPurple, smoothstep(0.33, 0.66, t));
-      color = mix(color, colorDark, smoothstep(0.66, 1.0, t));
+      vec3 color;
 
-      gl_FragColor = vec4(color, 0.86);
+      if (t < 0.2) {
+        color = mix(c1, c2, t / 0.2);
+      } else if (t < 0.4) {
+        color = mix(c2, c3, (t - 0.2) / 0.2);
+      } else if (t < 0.6) {
+        color = mix(c3, c4, (t - 0.4) / 0.2);
+      } else if (t < 0.8) {
+        color = mix(c4, c5, (t - 0.6) / 0.2);
+      } else {
+        color = mix(c5, c6, (t - 0.8) / 0.2);
+      }
+
+      gl_FragColor = vec4(color, 0.92);
     }
   `
 
