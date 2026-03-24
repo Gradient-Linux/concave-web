@@ -94,6 +94,7 @@ onMounted(() => {
   })
 
   mesh = new THREE.Mesh(geometry, material)
+  mesh.position.y = -1
   scene.add(mesh)
 
   const animate = () => {

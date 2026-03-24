@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import { api, pollJob } from '../lib/api'
 import { formatBytes } from '../lib/format'
@@ -8,6 +8,47 @@ import type { JobSnapshot, WorkspacePayload } from '../types'
 const workspace = ref<WorkspacePayload | null>(null)
 const job = ref<JobSnapshot | null>(null)
 const error = ref('')
+
+const usageEntries = computed(() => {
+  if (!workspace.value?.usages) {
+    return []
+  }
+
+  const preferredOrder = ['backups', 'compose', 'config', 'dags', 'data', 'mlruns', 'models', 'notebooks', 'outputs']
+  const ranking = new Map(preferredOrder.map((name, index) => [name, index]))
+
+  return Object.entries(workspace.value.usages)
+    .sort(([left], [right]) => {
+      const leftRank = ranking.get(left) ?? preferredOrder.length + 1
+      const rightRank = ranking.get(right) ?? preferredOrder.length + 1
+      if (leftRank !== rightRank) {
+        return leftRank - rightRank
+      }
+      return left.localeCompare(right)
+    })
+    .map(([name, value]) => ({
+      name,
+      value,
+      percent: workspace.value?.total ? Math.max(0, Math.min(100, (value / workspace.value.total) * 100)) : 0,
+    }))
+})
+
+const workspaceUsagePercent = computed(() => {
+  if (!workspace.value?.total) {
+    return 0
+  }
+  return Math.max(0, Math.min(100, (workspace.value.used / workspace.value.total) * 100))
+})
+
+function usageTone(value: number): string {
+  if (value >= 80) {
+    return 'var(--color-gold)'
+  }
+  if (value >= 50) {
+    return 'var(--color-mid)'
+  }
+  return 'var(--color-deep)'
+}
 
 async function load() {
   try {
@@ -41,6 +82,18 @@ onMounted(load)
       <p class="muted-copy">
         {{ formatBytes(workspace.free) }} free of {{ formatBytes(workspace.total) }}
       </p>
+      <div class="usage-block">
+        <div class="row-line">
+          <span>Usage</span>
+          <strong>{{ workspaceUsagePercent.toFixed(1) }}%</strong>
+        </div>
+        <div class="progress-track workspace-progress">
+          <div
+            class="progress-fill progress-fill--accent"
+            :style="{ width: `${workspaceUsagePercent}%`, background: usageTone(workspaceUsagePercent) }"
+          ></div>
+        </div>
+      </div>
       <div class="action-row">
         <button class="primary-button" type="button" @click="run('backup')">Backup</button>
         <button class="ghost-button" type="button" @click="run('clean')">Clean outputs</button>
@@ -49,10 +102,18 @@ onMounted(load)
 
     <article class="surface-panel" v-if="workspace">
       <p class="eyebrow">Usage</p>
-      <div class="stack-list">
-        <div v-for="(value, key) in workspace.usages" :key="key" class="row-line">
-          <span>{{ key }}</span>
-          <strong>{{ formatBytes(value) }}</strong>
+      <div class="workspace-usage-list">
+        <div v-for="entry in usageEntries" :key="entry.name" class="workspace-usage-item">
+          <div class="row-line workspace-usage-row">
+            <span>{{ entry.name }}</span>
+            <strong>{{ formatBytes(entry.value) }}</strong>
+          </div>
+          <div class="progress-track">
+            <div
+              class="progress-fill progress-fill--accent"
+              :style="{ width: `${entry.percent}%`, background: usageTone(entry.percent) }"
+            ></div>
+          </div>
         </div>
       </div>
     </article>
