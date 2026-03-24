@@ -1,25 +1,28 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps<{
-  value: string
-}>()
+const props = defineProps<{ value: string }>()
+
+const normalized = computed(() => props.value.trim().toLowerCase())
 
 const tone = computed(() => {
-  const value = props.value.toLowerCase()
-  if (value.includes('running') || value.includes('ok') || value.includes('healthy') || value.includes('active')) {
-    return 'success'
-  }
-  if (value.includes('degraded') || value.includes('warn')) {
-    return 'warn'
-  }
-  if (value.includes('stopped') || value.includes('failed') || value.includes('error') || value.includes('unconfigured')) {
-    return 'error'
-  }
+  const v = normalized.value
+  if (!v) return 'muted'
+  if (v.includes('running') || v.includes('ok') || v.includes('healthy') || v.includes('active') || v.includes('pass')) return 'success'
+  if (v.includes('degraded') || v.includes('warn') || v.includes('skip') || v.includes('unconfigured')) return 'warn'
+  if (v.includes('stopped') || v.includes('failed') || v.includes('error') || v.includes('fail')) return 'error'
+  if (v.includes('viewer') || v.includes('developer') || v.includes('operator') || v.includes('admin')) return 'role'
   return 'muted'
 })
+
+const label = computed(() =>
+  props.value
+    .trim()
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' '),
+)
 </script>
 
 <template>
-  <span class="status-badge" :class="`tone-${tone}`">{{ value }}</span>
+  <span class="status-badge" :class="`tone-${tone}`">{{ label }}</span>
 </template>
