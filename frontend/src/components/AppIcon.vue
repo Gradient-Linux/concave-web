@@ -50,10 +50,8 @@ defineProps<{
       <path d="M4.5 19v-1.2A4.3 4.3 0 0 1 8.8 13.5h.4A4.3 4.3 0 0 1 13.5 17.8V19" />
       <path d="M13.8 19v-1A3 3 0 0 1 16.8 15h.2A3 3 0 0 1 20 18v1" />
     </template>
-    <template v-else-if="name === 'doctor'">
-      <path d="M12 3v18" />
-      <path d="M7 8h10" />
-      <path d="m8 16 1.8-5 2.2 3 1.8-4 2.2 6" />
+    <template v-else-if="name === 'check'">
+      <path d="M20 6 9 17l-5-5" />
     </template>
     <template v-else-if="name === 'lab'">
       <path d="M9 3v5" />

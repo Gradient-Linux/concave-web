@@ -30,7 +30,7 @@ const items: NavItem[] = [
   { label: 'Suites', to: '/suites', minRole: 'viewer', icon: 'suites' },
   { label: 'Logs', to: '/logs', minRole: 'viewer', icon: 'logs' },
   { label: 'Workspace', to: '/workspace', minRole: 'viewer', icon: 'workspace' },
-  { label: 'Doctor', to: '/doctor', minRole: 'viewer', icon: 'doctor' },
+  { label: 'Check', to: '/check', minRole: 'viewer', icon: 'check' },
   { label: 'Gradient Lab', to: '/lab', minRole: 'viewer', icon: 'lab' },
   { label: 'Teams', to: '/teams', minRole: 'admin', icon: 'teams' },
   { label: 'Users', to: '/users', minRole: 'admin', icon: 'users' },

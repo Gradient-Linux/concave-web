@@ -7,7 +7,7 @@ import type { Role } from '../types'
 import DashboardView from '../views/DashboardView.vue'
 import EnvironmentView from '../views/EnvironmentView.vue'
 import FleetView from '../views/FleetView.vue'
-import DoctorView from '../views/DoctorView.vue'
+import CheckView from '../views/CheckView.vue'
 import LabView from '../views/LabView.vue'
 import LoginView from '../views/LoginView.vue'
 import LogsView from '../views/LogsView.vue'
@@ -37,7 +37,8 @@ export const router = createRouter({
     { path: '/suites', component: SuitesView, meta: { minRole: 'viewer', title: 'Suites' } },
     { path: '/logs', component: LogsView, meta: { minRole: 'viewer', title: 'Logs' } },
     { path: '/workspace', component: WorkspaceView, meta: { minRole: 'viewer', title: 'Workspace' } },
-    { path: '/doctor', component: DoctorView, meta: { minRole: 'viewer', title: 'Doctor' } },
+    { path: '/check', component: CheckView, meta: { minRole: 'viewer', title: 'Check' } },
+    { path: '/doctor', redirect: '/check' },
     { path: '/lab', component: LabView, meta: { minRole: 'viewer', title: 'Gradient Lab' } },
     { path: '/teams', component: TeamsView, meta: { minRole: 'admin', title: 'Teams' } },
     { path: '/users', component: UsersView, meta: { minRole: 'admin', title: 'Users' } },

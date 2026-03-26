@@ -133,15 +133,15 @@ export interface WorkspacePayload {
   usages: Record<string, number>
 }
 
-export interface DoctorCheck {
+export interface CheckItem {
   name: string
   status: string
   detail: string
   recovery?: string
 }
 
-export interface DoctorResponse {
-  checks: DoctorCheck[]
+export interface CheckResponse {
+  checks: CheckItem[]
 }
 
 export interface SystemService {

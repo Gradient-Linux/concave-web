@@ -32,9 +32,18 @@ const workspace = computed(() => {
   return metrics.value.workspace
 })
 
+const workspaceError = computed(() => {
+  if (!metrics.value || 'root' in metrics.value.workspace) {
+    return ''
+  }
+  return metrics.value.workspace.error
+})
+
 const installedSuites = computed(() => metrics.value?.suites.filter((suite) => suite.installed) ?? [])
 const gpuDevices = computed(() => metrics.value?.gpu?.devices ?? [])
+const gpuError = computed(() => metrics.value?.gpu?.error ?? '')
 const cpuOverall = computed(() => clampPercent(metrics.value?.cpu?.overall))
+const cpuError = computed(() => metrics.value?.cpu?.error ?? '')
 const gpuOverall = computed(() => {
   if (!gpuDevices.value.length) {
     return 0
@@ -44,6 +53,7 @@ const gpuOverall = computed(() => {
   )
 })
 const memory = computed(() => metrics.value?.memory ?? null)
+const memoryError = computed(() => metrics.value?.memory?.error ?? '')
 const cpuCores = computed(() => metrics.value?.cpu?.cores ?? [])
 const cpuCoreGridStyle = computed(() => {
   const count = cpuCores.value.length
@@ -164,6 +174,13 @@ onBeforeUnmount(() => {
           <strong>{{ percentageText(workspaceUsagePercent) }}</strong>
         </div>
       </div>
+      <p v-if="workspaceError" class="muted-copy">{{ workspaceError }}</p>
+    </article>
+
+    <article class="surface-panel dashboard-card card-span-6" v-else-if="workspaceError">
+      <p class="eyebrow">Workspace</p>
+      <h2>Workspace unavailable</h2>
+      <p class="muted-copy">{{ workspaceError }}</p>
     </article>
 
     <article class="surface-panel dashboard-card card-span-6" v-if="metrics">
@@ -191,10 +208,11 @@ onBeforeUnmount(() => {
         </div>
         <span class="muted-copy">{{ cpuCores.length }} cores</span>
       </div>
+      <p v-if="cpuError" class="muted-copy">{{ cpuError }}</p>
       <MetricLineChart :values="cpuHistory" stroke="var(--color-mid)" fill="rgba(124, 58, 237, 0.16)" />
     </article>
 
-    <article class="surface-panel dashboard-card card-span-6" v-if="gpuDevices.length">
+    <article class="surface-panel dashboard-card card-span-6" v-if="gpuDevices.length || gpuError">
       <div class="metric-panel-header">
         <div>
           <p class="eyebrow">GPU usage</p>
@@ -203,8 +221,9 @@ onBeforeUnmount(() => {
             <strong>{{ percentageText(gpuOverall) }}</strong>
           </div>
         </div>
-        <span class="muted-copy">{{ gpuPrimary?.name }}</span>
+        <span class="muted-copy">{{ gpuPrimary?.name || (gpuError || 'no GPU detected') }}</span>
       </div>
+      <p v-if="gpuError" class="muted-copy">{{ gpuError }}</p>
       <MetricLineChart :values="gpuHistory" stroke="var(--color-gold)" fill="rgba(249, 212, 78, 0.14)" />
     </article>
 
@@ -214,6 +233,7 @@ onBeforeUnmount(() => {
         <strong>{{ formatBytes(memory?.used) }} / {{ formatBytes(memory?.total) }}</strong>
         <span>{{ percentageText(ramUsagePercent) }}</span>
       </div>
+      <p v-if="memoryError" class="muted-copy">{{ memoryError }}</p>
       <div class="usage-stack">
         <div class="usage-block">
           <div class="row-line">

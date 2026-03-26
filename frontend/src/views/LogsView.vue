@@ -36,15 +36,24 @@ async function loadSuites() {
 function connect() {
   socket?.close()
   lines.value = []
+  error.value = ''
   if (!selectedSuite.value || !selectedContainer.value) {
     return
   }
-  socket = new WebSocket(
-    wsURL(`/api/v1/suites/${selectedSuite.value}/logs?container=${encodeURIComponent(selectedContainer.value)}`),
-  )
+  const params = new URLSearchParams({
+    container: selectedContainer.value,
+    service: selectedContainer.value,
+    lines: '100',
+    follow: 'true',
+  })
+  socket = new WebSocket(wsURL(`/api/v1/suites/${selectedSuite.value}/logs?${params.toString()}`))
   socket.onmessage = (event) => {
-    const payload = JSON.parse(event.data) as { type: string; line?: string }
-    if (payload.type === 'line' && payload.line) {
+    const payload = JSON.parse(event.data) as { type?: string; line?: string; error?: string }
+    if (payload.error) {
+      error.value = payload.error
+      return
+    }
+    if ((payload.type === undefined || payload.type === 'line') && payload.line) {
       lines.value = [...lines.value.slice(-999), payload.line]
     }
   }
