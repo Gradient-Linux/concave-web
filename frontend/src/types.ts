@@ -1,5 +1,47 @@
 export type Role = 'viewer' | 'developer' | 'operator' | 'admin'
 
+export type LabEnvStatus =
+  | 'pending'
+  | 'running'
+  | 'expiring'
+  | 'archiving'
+  | 'archived'
+  | 'failed'
+
+export interface LabEnv {
+  id: string
+  driver: string
+  owner: string
+  image: string
+  display_name?: string
+  status: LabEnvStatus
+  container_id?: string
+  jupyter_url?: string
+  token?: string
+  gpus: number
+  cpu_request?: string
+  mem_request?: string
+  hot_tier_path: string
+  cold_tier_path: string
+  archive_ref?: string
+  created_at: string
+  expires_at: string
+  archived_at?: string
+  last_error?: string
+}
+
+export interface LabStorage {
+  hot_tier: string
+  cold_tier: string
+}
+
+export interface LabEnvsResponse {
+  envs: LabEnv[]
+  storage: LabStorage
+  drivers: string[]
+  active: string
+}
+
 export interface Session {
   username: string
   role: Role

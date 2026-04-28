@@ -9,6 +9,7 @@ import EnvironmentView from '../views/EnvironmentView.vue'
 import FleetView from '../views/FleetView.vue'
 import CheckView from '../views/CheckView.vue'
 import LabView from '../views/LabView.vue'
+import LabEnvsView from '../views/LabEnvsView.vue'
 import LoginView from '../views/LoginView.vue'
 import LogsView from '../views/LogsView.vue'
 import SettingsView from '../views/SettingsView.vue'
@@ -40,6 +41,7 @@ export const router = createRouter({
     { path: '/check', component: CheckView, meta: { minRole: 'viewer', title: 'Check' } },
     { path: '/doctor', redirect: '/check' },
     { path: '/lab', component: LabView, meta: { minRole: 'viewer', title: 'Gradient Lab' } },
+    { path: '/lab/envs', component: LabEnvsView, meta: { minRole: 'viewer', title: 'Lab Envs' } },
     { path: '/teams', component: TeamsView, meta: { minRole: 'admin', title: 'Teams' } },
     { path: '/users', component: UsersView, meta: { minRole: 'admin', title: 'Users' } },
     { path: '/system', component: SystemView, meta: { minRole: 'admin', title: 'System' } },
