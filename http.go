@@ -29,6 +29,8 @@ func handleSettings(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "api_base_url, bind_addr, and port are required", http.StatusBadRequest)
 			return
 		}
+		// Prometheus and Grafana URLs are optional. When empty, the associated
+		// /monitoring/* proxy route is simply not mounted on the next start.
 		if err := config.Save(cfg); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
