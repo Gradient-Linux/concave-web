@@ -214,4 +214,51 @@ export interface WebSettings {
   api_base_url: string
   bind_addr: string
   port: number
+  prometheus_url: string
+  grafana_url: string
+}
+
+export type PromQLResultType = 'vector' | 'scalar' | 'matrix' | 'string'
+
+export interface PromQLVectorSample {
+  metric: Record<string, string>
+  value: [number, string]
+}
+
+export interface PromQLMatrixSample {
+  metric: Record<string, string>
+  values: Array<[number, string]>
+}
+
+export interface PromQLInstantResponse {
+  status: 'success' | 'error'
+  errorType?: string
+  error?: string
+  data?: {
+    resultType: PromQLResultType
+    result: PromQLVectorSample[] | PromQLMatrixSample[] | [number, string]
+  }
+}
+
+export interface MonitoringReachability {
+  prometheus: {
+    reachable: boolean
+    version?: string
+    error?: string
+  }
+  grafana: {
+    reachable: boolean
+    version?: string
+    error?: string
+  }
+}
+
+export interface MonitoringSuiteHint {
+  suite: string
+  state: string
+  containers: Array<{
+    name: string
+    role: string
+    status: string
+  }>
 }

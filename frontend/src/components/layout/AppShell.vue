@@ -27,6 +27,7 @@ const items: NavItem[] = [
   { label: 'Dashboard', to: '/dashboard', minRole: 'viewer', icon: 'dashboard' },
   { label: 'Environment', to: '/environment', minRole: 'viewer', icon: 'environment' },
   { label: 'Fleet', to: '/fleet', minRole: 'viewer', icon: 'fleet' },
+  { label: 'Monitoring', to: '/monitoring', minRole: 'viewer', icon: 'monitoring' },
   { label: 'Suites', to: '/suites', minRole: 'viewer', icon: 'suites' },
   { label: 'Logs', to: '/logs', minRole: 'viewer', icon: 'logs' },
   { label: 'Workspace', to: '/workspace', minRole: 'viewer', icon: 'workspace' },

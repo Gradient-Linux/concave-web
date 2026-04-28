@@ -67,6 +67,22 @@ func serve() error {
 	spa := spaHandler(dist)
 
 	mux.Handle("/api/v1/", apiProxy)
+
+	if cfg.PrometheusURL != "" {
+		promProxy, err := proxy.NewPath(cfg.PrometheusURL, "/monitoring/prometheus")
+		if err != nil {
+			return fmt.Errorf("prometheus proxy: %w", err)
+		}
+		mux.Handle("/monitoring/prometheus/", promProxy)
+	}
+	if cfg.GrafanaURL != "" {
+		grafProxy, err := proxy.NewPath(cfg.GrafanaURL, "/monitoring/grafana")
+		if err != nil {
+			return fmt.Errorf("grafana proxy: %w", err)
+		}
+		mux.Handle("/monitoring/grafana/", grafProxy)
+	}
+
 	mux.HandleFunc("/settings", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet && wantsHTML(r) {
 			spa.ServeHTTP(w, r)

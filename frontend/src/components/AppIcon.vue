@@ -145,5 +145,13 @@ defineProps<{
       <path d="M13 10v4" />
       <path d="M16 10v4" />
     </template>
+    <template v-else-if="name === 'monitoring'">
+      <path d="M3.5 3.5v17h17" />
+      <path d="M7 16l3.5-4 3 3 5-7" />
+      <circle cx="7" cy="16" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="10.5" cy="12" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="13.5" cy="15" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="18.5" cy="8" r="0.8" fill="currentColor" stroke="none" />
+    </template>
   </svg>
 </template>

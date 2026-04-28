@@ -11,6 +11,8 @@ const form = reactive<WebSettings>({
   api_base_url: '',
   bind_addr: '',
   port: 8080,
+  prometheus_url: '',
+  grafana_url: '',
 })
 
 const error = ref('')
@@ -76,6 +78,19 @@ onMounted(load)
           <span>Port</span>
           <input v-model.number="form.port" type="number" min="1" max="65535" required />
         </label>
+        <div class="section-divider"></div>
+        <label>
+          <span>Prometheus URL</span>
+          <input v-model="form.prometheus_url" type="url" placeholder="http://127.0.0.1:9090" />
+        </label>
+        <label>
+          <span>Grafana URL</span>
+          <input v-model="form.grafana_url" type="url" placeholder="http://127.0.0.1:3000" />
+        </label>
+        <p class="muted-copy">
+          Leave Prometheus or Grafana blank to disable the corresponding
+          <code class="mono-copy">/monitoring/*</code> proxy route on the next restart.
+        </p>
         <div class="action-row">
           <button class="primary-button" type="submit">Save</button>
           <span class="success-copy" v-if="saved">{{ saved }}</span>
